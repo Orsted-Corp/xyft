@@ -11,6 +11,7 @@ const recentTransactions = [
       amount: -45.99,
       date: '2023-07-20',
       image: require('../assets/download.png'),
+      address: '0x1234567890123456789012345678901234567890',
     },
     {
       id: '2',
@@ -18,6 +19,7 @@ const recentTransactions = [
       amount: 2000,
       date: '2023-07-19',
       image: require('../assets/download.png'),
+        address: '0x1234567890123456789012345678901234567890',
     },
     // Add more transactions here
   ];

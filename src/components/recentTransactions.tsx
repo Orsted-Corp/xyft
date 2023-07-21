@@ -7,6 +7,7 @@ interface Transaction {
   amount: number;
   date: string;
   image: number;
+  address: string;
 }
 
 interface RecentTransactionsProps {
@@ -16,13 +17,20 @@ interface RecentTransactionsProps {
 const RecentTransactions: React.FC<RecentTransactionsProps> = ({ transactions }) => {
   const renderItem = ({ item }: { item: Transaction }) => (
     <View style={styles.transactionItem}>
-      <Image
-            source={item.image}
-            style={styles.txnPicture}
-        />
-      <Text style={styles.transactionTitle}>{item.title}</Text>
-      <Text style={styles.transactionAmount}>${item.amount.toFixed(2)}</Text>
-      <Text style={styles.transactionDate}>{item.date}</Text>
+        <Image
+                source={item.image}
+                style={styles.txnPicture}
+            />
+        <View style={styles.description}>
+            <Text style={styles.transactionTitle}>{item.title}</Text>
+            <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.transactionDate}>{item.date} </Text>
+                <Text style={styles.transactionAddress}>{item.address.substring(0, 8)}...</Text>
+            </View>
+        </View>
+        <View style={styles.amount}>
+            <Text style={styles.transactionAmount}>${item.amount.toFixed(2)}</Text>
+        </View>
     </View>
   );
 
@@ -58,6 +66,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#ccc',
+    flexDirection: 'row',
   },
   transactionTitle: {
     fontSize: 16,
@@ -65,11 +74,11 @@ const styles = StyleSheet.create({
   },
   transactionAmount: {
     fontSize: 14,
-    color: 'green',
+    color: '#2ecc71',
   },
   transactionDate: {
     fontSize: 12,
-    color: '#999',
+    color: 'green',
   },
     txnPicture: {
     width: 50,
@@ -77,6 +86,20 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginRight: 20,
     },
+    description: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    },
+    amount: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    flex: 1,
+    },
+    transactionAddress: {
+    fontSize: 12,
+    color: '#999',
+    }
 });
 
 export default RecentTransactions;
