@@ -24,6 +24,6 @@ export default function Dashboard() {
             flex: 1,
             backgroundColor: '#aaa',
             alignItems: 'center',
-            justifyContent: 'center',
+            flexDirection: 'column',
         }
     });

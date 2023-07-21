@@ -37,11 +37,6 @@ const Header: React.FC<HeaderProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    // Keep the header at the top of the screen
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
     // Add some padding to the top
     paddingTop: 75,
     // Set the header background color
@@ -50,7 +45,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
     // Add padding
-    paddingHorizontal: 20,
+    paddingHorizontal: '7.5%',
     // Set flex direction
     flexDirection: 'row',
     // Add z-index to make sure the header is above everything else
