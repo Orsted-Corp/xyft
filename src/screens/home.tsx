@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Dashboard from './dashboard';
-import Screen1 from './Screen1';
+import Pay from './pay';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -21,8 +21,8 @@ function HomeStack() {
             name="Dashboard"
             component={Dashboard} />
           <Stack.Screen
-            name="Screen1"
-            component={Screen1} />
+            name="Pay"
+            component={Pay} />
         </Stack.Navigator>
     );
   }
@@ -37,7 +37,7 @@ export default function Home() {
                     let iconName: string = 'home';
                     if (route.name === 'Dashboard') {
                         iconName = focused ? 'home' : 'home-outline';
-                    } else if (route.name === 'Screen1') {
+                    } else if (route.name === 'Pay') {
                         iconName = focused ? 'account' : 'account-outline';
                     }
                     return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
@@ -48,7 +48,7 @@ export default function Home() {
             })}
         >
             <Tab.Screen name="Dashboard" component={HomeStack} />
-            <Tab.Screen name="Screen1" component={Screen1} />
+            <Tab.Screen name="Pay" component={Pay} />
         </Tab.Navigator>
     </NavigationContainer>
     );
