@@ -13,8 +13,11 @@ import { useState, useCallback, useEffect } from "react";
 import { getWallet } from "./Wallet";
 
 async function createWeb3Wallet() {
-  const currentETHAddress = await getWallet(config.rpcUrl);
+  console.log("Initializing wallet")
+  currentETHAddress = await getWallet(config.rpcUrl);
 
+  console.log(currentETHAddress);
+  console.log(config.walletConnectProjectId);
   const core = new Core({
     projectId: config.walletConnectProjectId,
   });

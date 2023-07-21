@@ -3,6 +3,8 @@ import { StatusBar } from 'expo-status-bar';
 import Header from '../components/header';
 import BalanceDisplay from '../components/balanceDisplay';
 import RecentTransactions from '../components/recentTransactions';
+import { useEffect } from 'react';
+import useInitialization from '../utils/WalletConnectUtils';
 
 const recentTransactions = [
     {
@@ -23,6 +25,7 @@ const recentTransactions = [
   ];
 
 export default function Dashboard() {
+  const initialized = useInitialization()
     return (
         <View style={styles.container}>
         <Header
