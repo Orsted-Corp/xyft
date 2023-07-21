@@ -1,7 +1,7 @@
-import Dashboard from './src/screens/dashboard';
+import Home from "./src/screens/home";
 
 export default function App() {
   return (
-    <Dashboard />
+    <Home />
   );
 }
