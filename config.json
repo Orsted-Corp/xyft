@@ -1,0 +1,9 @@
+{
+  "rpcUrl": "https://api.stackup.sh/v1/node/2140446878ef19ebd4aa209e7fa8c734526249888a698ccab550d15e2dda06a6",
+  "signingKey": "0x4b90b223b21453e085b983efb5112bdb23567b26215beacaa2c6a9ebda693b07",
+  "paymaster": {
+    "rpcUrl": "https://api.stackup.sh/v1/paymaster/2140446878ef19ebd4aa209e7fa8c734526249888a698ccab550d15e2dda06a6",
+    "context": {}
+  },
+  "walletConnectProjectId":""
+}
