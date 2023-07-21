@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 interface HeaderProps {
@@ -65,6 +64,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: '#fff',
   },
   notificationContainer: {
     position: 'relative',
