@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { Button, Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useMyContext } from "../utils/context";
 import Home from "./home";
+import { ethers } from "ethers";
 
 import RPC from "../utils/ethersRPC"; // for using ethers.js
 
@@ -20,7 +21,8 @@ const LoginScreen: React.FC = () => {
   const [key, setKey] = useState<string>("");
   const [userInfo, setUserInfo] = useState<any>("");
   const [console, setConsole] = useState<string>("");
-  const { sharedValue, setSharedValue } = useMyContext();
+  const { accountDetails, setAccountDetails } = useMyContext();
+  const { publicKey, setPublicKey } = useMyContext();
 
   const login = async () => {
     try {
@@ -38,7 +40,17 @@ const LoginScreen: React.FC = () => {
 
       setUserInfo(info);
       setKey(info.privKey);
-      setSharedValue(info.privKey);
+      setAccountDetails(info);
+      const privateKey = info.privKey;
+      const wallet = new ethers.Wallet(
+        privateKey
+    );
+      const provider = new ethers.providers.JsonRpcProvider(
+        "https://rpc.ankr.com/polygon"
+    );
+    const signer = wallet.connect(provider);
+    setPublicKey(await signer.getAddress());
+      (info);
     } catch (e) {
       setConsole("Error: " + e);
     }   

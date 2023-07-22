@@ -1,35 +1,50 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import QRCode from 'react-native-qrcode-svg';
+import { useMyContext } from '../utils/context';
 
-interface HeaderProps {
-  profilePicture: string;
-  name: string;
-  notificationCount: number;
-  onPressNotification: () => void;
-}
 
-const Header: React.FC<HeaderProps> = ({
-  profilePicture,
-  name,
-  notificationCount,
-  onPressNotification,
-}) => {
+const Header: React.FC = () => {
+  const [isModalVisible, setModalVisible] = useState(false);
+  const profilePicture = require('../assets/qrcode.png');
+  const { publicKey, setPublicKey } = useMyContext();
+  const { accountDetails, setAccountDetails } = useMyContext();
+  // Wait till accountDetails is not undefined
+  const [accountDetails_,setaccountDetails_] = useState<any>(undefined)
+  useEffect(()=>{
+    setaccountDetails_(JSON.parse(JSON.stringify(accountDetails)))
+  },[accountDetails])
+
+  console.log("publicKey", accountDetails_);
+  
+  const qrData = 'ethereum:' + publicKey;
+
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
-        <Image source={{ uri: profilePicture }} style={styles.profilePicture} />
-        <Text style={styles.name}>{name}</Text>
+        <Image source={require('../assets/profileImage.jpeg')} style={styles.profilePicture} />
+        
+        <Text style={styles.name}>{accountDetails_ ? accountDetails_.userInfo.name : "Loading"}</Text>
       </View>
-      <TouchableOpacity style={styles.notificationContainer} onPress={onPressNotification}>
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
         <Image
-            source={require('../assets/notification-icon.png')}
+            source={require('../assets/qrcode.png')}
             style={styles.notificationIcon}
         />
-        {notificationCount > 0 && (
-          <View style={styles.notificationBadge}>
-            <Text style={styles.notificationCount}>{notificationCount}</Text>
-          </View>
-        )}
       </TouchableOpacity>
+      <Modal visible={isModalVisible} transparent={true} animationType="fade">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+          <QRCode
+        value={qrData}
+        size={200} // Adjust the size of the QR code as needed
+          />
+            <TouchableOpacity onPress={ () => {setModalVisible(false)}} style={styles.modalText}>
+              <Text>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -88,6 +103,23 @@ const styles = StyleSheet.create({
   notificationCount: {
     color: '#fff',
     fontSize: 12,
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    flexDirection: 'column',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    marginHorizontal: '10%',
+    padding: 20,
+    borderRadius: 20,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  modalText: {
+    marginTop: 20,
   },
 });
 

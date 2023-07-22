@@ -3,8 +3,10 @@ import React, { createContext, useState, useContext } from 'react';
 
 // Define the type for the context value
 type MyContextValue = {
-  sharedValue: string;
-  setSharedValue: React.Dispatch<React.SetStateAction<string>>;
+  accountDetails: string;
+  setAccountDetails: React.Dispatch<React.SetStateAction<string>>;
+  publicKey: string;
+  setPublicKey: React.Dispatch<React.SetStateAction<string>>;
 };
 
 // Create the context
@@ -19,10 +21,11 @@ interface MyContextProviderProps {
 export const MyContextProvider: React.FC<MyContextProviderProps> = ({
   children,
 }) => {
-  const [sharedValue, setSharedValue] = useState('');
+  const [accountDetails, setAccountDetails] = useState('');
+  const [publicKey, setPublicKey] = useState('');
 
   return (
-    <MyContext.Provider value={{ sharedValue, setSharedValue }}>
+    <MyContext.Provider value={{ accountDetails, setAccountDetails, publicKey, setPublicKey }}>
       {children}
     </MyContext.Provider>
   );

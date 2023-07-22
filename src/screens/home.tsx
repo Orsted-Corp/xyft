@@ -1,5 +1,4 @@
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useMyContext } from '../utils/context';
 import { StyleSheet } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -37,8 +36,6 @@ function HomeStack() {
   }
 
 export default function Home() {
-    const { sharedValue, setSharedValue } = useMyContext();
-    console.log(sharedValue)
     return (
     <NavigationContainer>
         <Tab.Navigator

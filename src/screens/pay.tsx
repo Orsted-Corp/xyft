@@ -190,19 +190,6 @@ const Pay: React.FC = () => {
     >
       <View style={styles.container}>
         <Scanner />
-        <TextInput
-          style={styles.input}
-          placeholder="Enter address"
-          keyboardType="ascii-capable"
-          onChangeText={handleTextChange}
-          value={inputText}
-        />
-        <Button
-          title="Pay"
-          onPress={async () => {
-            console.log("Pay");
-          }}
-        />
       </View>
     </KeyboardAvoidingView>
   );

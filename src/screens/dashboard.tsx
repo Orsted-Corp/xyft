@@ -30,12 +30,7 @@ export default function Dashboard() {
   const initialized = useInitialization()
     return (
         <View style={styles.container}>
-        <Header
-            profilePicture="https://avatars.githubusercontent.com/u/1024025?v=4"
-            name="John Doe"
-            notificationCount={3}
-            onPressNotification={() => console.log('Notification pressed')}
-        />
+        <Header />
         <BalanceDisplay balance={100} />
         <RecentTransactions transactions={recentTransactions} />
         <StatusBar style="auto" />
