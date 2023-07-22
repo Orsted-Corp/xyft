@@ -10,11 +10,95 @@ import Scanner from "../components/scanner";
 import React, { useCallback, useEffect, useState } from "react";
 import { Platform } from "react-native";
 import { SessionTypes, SignClientTypes } from "@walletconnect/types";
-import { currentETHAddress, web3wallet } from "../utils/WalletConnectUtils";
+import useInitialization, {
+  currentETHAddress,
+  web3wallet,
+} from "../utils/WalletConnectUtils";
 import { getSdkError } from "@walletconnect/utils";
+import { SIGNING_METHODS } from "../utils/WalletLib";
+import { Client, Presets } from "userop";
+import { formatJsonRpcResult } from "@json-rpc-tools/utils";
+import { ethers, providers } from "ethers";
+import { id } from "ethers/lib/utils";
+import config from "../../config.json";
 
 const Pay: React.FC = () => {
   const [inputText, setInputText] = useState("");
+  const [requestProcessing, setRequestProcessing] = useState(false);
+  const onSessionRequest = useCallback(
+    async (requestEvent: SignClientTypes.EventArguments["session_request"]) => {
+      console.log("req");
+      const { topic, params, id } = requestEvent;
+      console.log(topic);
+      const { request } = params;
+      setRequestProcessing(true);
+      if (requestProcessing) return;
+      switch (request.method) {
+        case SIGNING_METHODS.ETH_SEND_TRANSACTION:
+          try {
+            const paymasterMiddleware = Presets.Middleware.verifyingPaymaster(
+              config.paymaster.rpcUrl,
+              config.paymaster.context
+            );
+            console.log("paymasterMiddleware", paymasterMiddleware);
+            const simpleAccount = await Presets.Builder.SimpleAccount.init(
+              new ethers.Wallet(config.signingKey),
+              config.rpcUrl,
+              { paymasterMiddleware }
+            );
+            const client = await Client.init(config.rpcUrl);
+            const sendTransaction: providers.TransactionRequest =
+              request.params[0];
+            
+            console.log("sd",sendTransaction);
+            const value = sendTransaction.value || 0
+
+            const res = await client.sendUserOperation(
+              simpleAccount.execute(
+                sendTransaction.to as string,
+                0,
+                sendTransaction.data as string
+              ),
+              {}
+            );
+            console.log("Waiting for transaction...");
+            const ev = await res.wait();
+            console.log(`Transaction hash: ${ev?.transactionHash ?? null}`);
+            const response = formatJsonRpcResult(id, ev?.transactionHash);
+            console.log(response);
+            console.log(topic)
+            try{
+              await web3wallet.respondSessionRequest({
+                topic,
+                response,
+              });
+              setRequestProcessing(false);
+            }
+            catch(err){
+              console.log(err)
+            }
+          } catch (err) {
+            console.log(err);
+            web3wallet
+              .respondSessionRequest({
+                topic,
+                response: formatJsonRpcResult(id, null),
+              })
+              .then(() => {
+                console.log("Session failed");
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+          return;
+        default:
+          console.log(request.method);
+          console.log(request);
+      }
+    },
+    []
+  );
 
   const handleTextChange = (text: string) => {
     setInputText(text);
@@ -25,20 +109,29 @@ const Pay: React.FC = () => {
 
   useEffect(() => {
     web3wallet?.on("session_proposal", onSessionProposal);
-    // web3wallet?.on("session_request", onSessionRequest);
-  }, [
-    // pair,
-    handleAccept,
-    // handleReject,
-    currentETHAddress,
-    // onSessionRequest,
-    // onSessionProposal,
-    successfulSession,
-  ]);
+    web3wallet?.on("session_request", onSessionRequest);
+    web3wallet?.on("session_delete", onSessionDisconnect);
+  }, []);
 
   const onSessionProposal = useCallback(
     async (proposal: SignClientTypes.EventArguments["session_proposal"]) => {
+      console.log("prop");
+      console.log(proposal);
       setCurrentProposal(proposal);
+    },
+    []
+  );
+
+  const onSessionDisconnect = useCallback(
+    async (proposal: SignClientTypes.EventArguments["session_delete"]) => {
+      const activeSessions = await web3wallet.getActiveSessions();
+      console.log(activeSessions);
+      Object.values(activeSessions).forEach(async (session) => {
+        await web3wallet.disconnectSession({
+          topic: session.topic,
+          reason: getSdkError("USER_DISCONNECTED"),
+        });
+      });
     },
     []
   );
@@ -48,8 +141,8 @@ const Pay: React.FC = () => {
   }, [currentProposal]);
 
   async function handleAccept() {
-    const { id, params } = currentProposal;
-    const { requiredNamespaces, relays } = params;
+    const { topic, id, params } = currentProposal;
+    const { requiredNamespaces, optionalNamespaces, relays } = params;
 
     if (currentProposal) {
       console.log(currentProposal);
@@ -59,11 +152,21 @@ const Pay: React.FC = () => {
         requiredNamespaces[key].chains.map((chain: any) => {
           [currentETHAddress].map((acc) => accounts.push(`${chain}:${acc}`));
         });
-
         namespaces[key] = {
           accounts,
           methods: requiredNamespaces[key].methods,
           events: requiredNamespaces[key].events,
+        };
+      });
+      Object.keys(optionalNamespaces).forEach((key) => {
+        const accounts: string[] = [];
+        optionalNamespaces[key].chains.map((chain: any) => {
+          [currentETHAddress].map((acc) => accounts.push(`${chain}:${acc}`));
+        });
+        namespaces[key] = {
+          accounts,
+          methods: optionalNamespaces[key].methods,
+          events: optionalNamespaces[key].events,
         };
       });
       console.log(namespaces);
@@ -96,7 +199,7 @@ const Pay: React.FC = () => {
         />
         <Button
           title="Pay"
-          onPress={() => {
+          onPress={async () => {
             console.log("Pay");
           }}
         />
