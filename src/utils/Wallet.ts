@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ethers } from "ethers";
 import { Presets } from "userop";
-import config from "../../config.json"
+import config from "../../config.json";
 
 /**
  * Utilities
@@ -31,6 +31,10 @@ export const getLocalStorage = async () => {
 // Function to create or restore a wallet
 export async function getWallet(rpcUrl: string) {
   // let pk = await getLocalStorage();
-  let pk = config.signingKey
-  return "0xca5d434a9975eaef16e5638bd51dc29e4749820a"
+  const simpleAccount = await Presets.Builder.SimpleAccount.init(
+    new ethers.Wallet(config.signingKey),
+    config.rpcUrl
+  );
+  const address = simpleAccount.getSender();
+  return address;
 }
