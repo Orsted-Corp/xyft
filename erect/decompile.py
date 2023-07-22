@@ -13,8 +13,7 @@ import os
 import time
 from selenium.webdriver.common.action_chains import ActionChains
 from flask_cors import CORS, cross_origin
-from revChatGPT.Official import Chatbot
-
+from revChatGPT.V3 import Chatbot
 from flask import Flask
 from flask import request
 
