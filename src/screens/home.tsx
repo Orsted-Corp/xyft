@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Dashboard from './dashboard';
 import Pay from './pay';
+import Send from './send';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -23,6 +24,9 @@ function HomeStack() {
           <Stack.Screen
             name="Pay"
             component={Pay} />
+            <Stack.Screen
+            name="send"
+            component={Send} />
         </Stack.Navigator>
     );
   }
@@ -49,6 +53,7 @@ export default function Home() {
         >
             <Tab.Screen name="Dashboard" component={HomeStack} />
             <Tab.Screen name="Pay" component={Pay} />
+            <Tab.Screen name="Send" component={Send} />
         </Tab.Navigator>
     </NavigationContainer>
     );
