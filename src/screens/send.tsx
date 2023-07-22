@@ -37,19 +37,19 @@ const Send = () => {
       />
 
       {/* Dropdown 1 */}
-      <View style={{ width: '80%', height: 40, marginTop: 10 }}>
+      <View style={{ width: '80%', height: 40, marginTop: 10, zIndex: 10 }}>
         <DropDownPicker
-            open={open2}
+            open={open1}
           value={value1}
           items={items1}
-          setOpen={setOpen2}
+          setOpen={setOpen1}
           setValue={setValue1}
           setItems={setItems1}
         />
       </View>
 
       {/* Dropdown 2 */}
-      <View style={{ width: '80%', height: 40, marginTop: 50 }}>
+      <View style={{ width: '80%', height: 40, marginTop: 50, zIndex: 5 }}>
         <DropDownPicker
           open={open2}
           value={value2}
@@ -61,7 +61,7 @@ const Send = () => {
       </View>
 
       {/* Button */}
-      <View style={{ marginTop: 20 }}>
+      <View style={{ marginTop: 100 }}>
       <Button title="Submit" onPress={handleButtonPress} />
       </View>
     </View>

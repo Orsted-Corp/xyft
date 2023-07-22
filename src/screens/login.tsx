@@ -4,8 +4,10 @@ import * as Linking from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
 import React, { useState } from "react";
 import { Button, Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useMyContext } from "../utils/context";
+import Home from "./home";
 
-import RPC from "./ethersRPC"; // for using ethers.js
+import RPC from "../utils/ethersRPC"; // for using ethers.js
 
 const resolvedRedirectUrl =
   Constants.appOwnership === AppOwnership.Expo || Constants.appOwnership === AppOwnership.Guest
@@ -18,6 +20,7 @@ const LoginScreen: React.FC = () => {
   const [key, setKey] = useState<string>("");
   const [userInfo, setUserInfo] = useState<any>("");
   const [console, setConsole] = useState<string>("");
+  const { sharedValue, setSharedValue } = useMyContext();
 
   const login = async () => {
     try {
@@ -35,75 +38,24 @@ const LoginScreen: React.FC = () => {
 
       setUserInfo(info);
       setKey(info.privKey);
-      uiConsole("Logged In");
+      setSharedValue(info.privKey);
     } catch (e) {
-      uiConsole(e);
+      setConsole("Error: " + e);
     }   
   };
 
-  const getChainId = async () => {
-    setConsole("Getting chain id");
-    const networkDetails = await RPC.getChainId();
-    uiConsole(networkDetails);
-  };
-
-  const getAccounts = async () => {
-    setConsole("Getting account");
-    const address = await RPC.getAccounts(key);
-    uiConsole(address);
-  };
-
-  const getBalance = async () => {
-    setConsole("Fetching balance");
-    const balance = await RPC.getBalance(key);
-    uiConsole(balance);
-  };
-
-  const sendTransaction = async () => {
-    setConsole("Sending transaction");
-    const tx = await RPC.sendTransaction(key);
-    uiConsole(tx);
-  };
-
-  const signMessage = async () => {
-    setConsole("Signing message");
-    const message = await RPC.signMessage(key);
-    uiConsole(message);
-  };
-
-  const uiConsole = (...args: any[]) => {
-    setConsole(`${JSON.stringify(args || {}, null, 2)}\n\n\n\n${console}`);
-  };
-
   const loggedInView = (
-    <View style={styles.buttonArea}>
-      <Button title="Get User Info" onPress={() => uiConsole(userInfo)} />
-      <Button title="Get Chain ID" onPress={() => getChainId()} />
-      <Button title="Get Accounts" onPress={() => getAccounts()} />
-      <Button title="Get Balance" onPress={() => getBalance()} />
-      <Button title="Send Transaction" onPress={() => sendTransaction()} />
-      <Button title="Sign Message" onPress={() => signMessage()} />
-      <Button title="Get Private Key" onPress={() => uiConsole(key)} />
-      <Button title="Log Out" onPress={() => setKey("")} />
-    </View>
+    <Home />
   );
 
   const unloggedInView = (
-    <View style={styles.buttonArea}>
-      <Button title="Login with Web3Auth" onPress={login} />
-    </View>
+      <View style={styles.buttonArea}>
+        <Button title="Login with Web3Auth" onPress={login} />
+      </View>
   );
 
   return (
-    <View style={styles.container}>
-      {key ? loggedInView : unloggedInView}
-      <View style={styles.consoleArea}>
-        <Text style={styles.consoleText}>Console:</Text>
-        <ScrollView style={styles.console}>
-          <Text>{console}</Text>
-        </ScrollView>
-      </View>
-    </View>
+      key ? loggedInView : unloggedInView
   );
 };
 
