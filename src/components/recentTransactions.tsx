@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'rgba(255, 255, 255, 0)',
     padding: 10,
-    width: '90%',
+    width: 350,
     height: '55%',
     marginTop: 10,
   },
@@ -58,19 +58,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 15,
+    color: '#ddd',
   },
   transactionItem: {
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(80, 54, 106, 43)',
     padding: 10,
     marginBottom: 5,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: 'rgba(80, 54, 106, 90)',
     flexDirection: 'row',
   },
   transactionTitle: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#bbb',
   },
   transactionAmount: {
     fontSize: 14,
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
   },
   transactionDate: {
     fontSize: 12,
-    color: 'green',
+    color: '#35a162',
   },
     txnPicture: {
     width: 50,
