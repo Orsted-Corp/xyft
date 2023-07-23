@@ -2,9 +2,12 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Modal } from 'react-na
 import React, { useEffect, useState } from 'react';
 import QRCode from 'react-native-qrcode-svg';
 import { useMyContext } from '../utils/context';
+import { useNavigation } from '@react-navigation/native';
+import ParentControl from '../screens/parentControl';
 
 
 const Header: React.FC = () => {
+  const navigation = useNavigation();
   const [isModalVisible, setModalVisible] = useState(false);
   const profilePicture = require('../assets/qrcode.png');
   const { publicKey, setPublicKey } = useMyContext();
@@ -22,7 +25,9 @@ const Header: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
+        <TouchableOpacity onPress={() => {return(<ParentControl /> )}}>
         <Image source={require('../assets/profileImage.jpeg')} style={styles.profilePicture} />
+        </TouchableOpacity>
         
         <Text style={styles.name}>{accountDetails_ ? accountDetails_.userInfo.name : "Loading"}</Text>
       </View>

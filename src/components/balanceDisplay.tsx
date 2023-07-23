@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity } from 'react-native';
 
 interface BalanceDisplayProps {
   balance: string;
@@ -13,7 +13,15 @@ const BalanceDisplay: React.FC<BalanceDisplayProps> = ({ balance }) => {
     <View style={styles.container}>
       <Text style={styles.balanceLabel}>Balance</Text>
       <Text style={styles.walletLabel}>Wallet</Text>
+      <View style={{ flexDirection: 'row' }}>
       <Text style={styles.balanceAmount}>{balance}</Text>
+      <TouchableOpacity onPress={() => {}}>
+      <Image
+        source={require('../assets/reload.png')}
+        style={{ width: 25, height: 25, marginLeft: 250 }}
+      />
+      </TouchableOpacity>
+      </View>
     </View>
     </ImageBackground>
   );
