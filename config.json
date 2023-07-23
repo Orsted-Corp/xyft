@@ -6,5 +6,6 @@
   },
   "walletConnectProjectId": "21b0b7f251ef3ee9cec67dbc1764e203",
   "maxFeePerGas": "312073774150",
-  "maxPriorityFeePerGas": "44900000000"
+  "maxPriorityFeePerGas": "44900000000",
+  "key":"00f608daba978fa23b7aa53f74088fda69deaaff3cc22600f60882dc271ffbbb"
 }

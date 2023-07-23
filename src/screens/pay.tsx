@@ -21,13 +21,16 @@ import { formatJsonRpcResult } from "@json-rpc-tools/utils";
 import { ethers, providers } from "ethers";
 import { id } from "ethers/lib/utils";
 import config from "../../config.json";
+import { useMyContext } from "../utils/context";
 
 const Pay: React.FC = () => {
   const [inputText, setInputText] = useState("");
+  const { accountDetails } = useMyContext();
   const [requestProcessing, setRequestProcessing] = useState(false);
   const onSessionRequest = useCallback(
     async (requestEvent: SignClientTypes.EventArguments["session_request"]) => {
       console.log("req");
+      const det = JSON.parse(JSON.stringify(accountDetails));
       const { topic, params, id } = requestEvent;
       console.log(topic);
       const { request } = params;
@@ -42,7 +45,7 @@ const Pay: React.FC = () => {
             );
             console.log("paymasterMiddleware", paymasterMiddleware);
             const simpleAccount = await Presets.Builder.Kernel.init(
-              new ethers.Wallet(config.signingKey),
+              new ethers.Wallet(config.key),
               config.rpcUrl,
               { paymasterMiddleware }
             );
@@ -198,7 +201,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: '#111'
+    backgroundColor: "#111",
   },
   input: {
     height: 50,

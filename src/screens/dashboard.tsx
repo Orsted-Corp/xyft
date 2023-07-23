@@ -53,6 +53,15 @@ export default function Dashboard() {
     }
   }, [details, initialized, onInitialize]);
 
+  const refresh = () => {
+    const det = JSON.parse(JSON.stringify(accountDetails));
+    getWallet(det.privKey).then((res) => {
+      getBalance(res).then((res) => {
+        setBalance(res);
+      });
+    });
+  };
+
   useEffect(() => {
     const det = JSON.parse(JSON.stringify(accountDetails));
     setDetails(det);
@@ -73,7 +82,7 @@ export default function Dashboard() {
     >
       <View style={styles.container}>
         <Header />
-        <BalanceDisplay balance={balance} />
+        <BalanceDisplay balance={balance} refresh={refresh} />
         <RecentTransactions transactions={recentTransactions} />
         <StatusBar style="auto" />
       </View>

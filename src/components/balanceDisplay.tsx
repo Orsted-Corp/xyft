@@ -1,28 +1,43 @@
-import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 
 interface BalanceDisplayProps {
   balance: string;
+  refresh: () => void;
 }
 
-const BalanceDisplay: React.FC<BalanceDisplayProps> = ({ balance }) => {
+const BalanceDisplay: React.FC<BalanceDisplayProps> = ({
+  balance,
+  refresh,
+}) => {
   return (
     <ImageBackground
-      source={require('../assets/dashboard.png')}
+      source={require("../assets/dashboard.png")}
       style={styles.backgroundImage}
     >
-    <View style={styles.container}>
-      <Text style={styles.balanceLabel}>Balance</Text>
-      <Text style={styles.walletLabel}>Wallet</Text>
-      <View style={{ flexDirection: 'row' }}>
-      <Text style={styles.balanceAmount}>{balance}</Text>
-      <TouchableOpacity onPress={() => {}}>
-      <Image
-        source={require('../assets/reload.png')}
-        style={{ width: 25, height: 25, marginLeft: 250 }}
-      />
-      </TouchableOpacity>
+      <View style={styles.container}>
+        <Text style={styles.balanceLabel}>Balance</Text>
+        <Text style={styles.walletLabel}>Wallet</Text>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.balanceAmount}>{balance}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              refresh();
+            }}
+          >
+            <Image
+              source={require("../assets/reload.png")}
+              style={{ width: 25, height: 25, marginLeft: 250 }}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
     </ImageBackground>
   );
 };
@@ -44,16 +59,16 @@ const styles = StyleSheet.create({
   },
   balanceLabel: {
     fontSize: 16,
-    fontWeight: 'bold',
-    marginTop: '2.5%',
-    color: '#ddd'
+    fontWeight: "bold",
+    marginTop: "2.5%",
+    color: "#ddd",
   },
   walletLabel: {
     fontSize: 10,
-    fontWeight: 'bold',
-    marginTop: '20%',
-    color: '#ddd'
-    },
+    fontWeight: "bold",
+    marginTop: "20%",
+    color: "#ddd",
+  },
   balanceAmount: {
     fontSize: 24,
     fontWeight: "bold",
@@ -62,12 +77,12 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     flex: 1,
-    resizeMode: 'cover', // Set the image to cover the entire view
-    justifyContent: 'center', // Center content vertically
-    backgroundColor: 'rgba(81,56,110,1)',
+    resizeMode: "cover", // Set the image to cover the entire view
+    justifyContent: "center", // Center content vertically
+    backgroundColor: "rgba(81,56,110,1)",
     borderRadius: 20,
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
 });
 
 export default BalanceDisplay;

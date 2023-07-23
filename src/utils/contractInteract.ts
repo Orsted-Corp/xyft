@@ -27,6 +27,41 @@ export const checkApproval = async (address: string, spender: string) => {
   return ethers.utils.formatUnits(allowance, 18);
 };
 
+export const sendTokensSame = async (
+  address: string,
+  amount: string,
+  pk: string
+) => {
+  const paymasterMiddleware = Presets.Middleware.verifyingPaymaster(
+    config.paymaster.rpcUrl,
+    config.paymaster.context
+  );
+  const simpleAccount = await Presets.Builder.Kernel.init(
+    new ethers.Wallet(pk),
+    config.rpcUrl,
+    { paymasterMiddleware }
+  );
+  const client = await Client.init(config.rpcUrl);
+  const erc20Mumbai = new ethers.Contract(
+    tokens.USDC,
+    ERC20ABI,
+    new ethers.providers.JsonRpcProvider(tokens.rpc)
+  );
+  const res = await client.sendUserOperation(
+    simpleAccount.execute({
+      to: tokens.USDC,
+      value: 0,
+      data: erc20Mumbai.interface.encodeFunctionData("transfer", [
+        address,
+        ethers.utils.parseUnits(amount, 18),
+      ]),
+    })
+  );
+  console.log("Waiting for transaction...");
+  const ev = await res.wait();
+  console.log(`Transaction hash for transfer: ${ev?.transactionHash ?? null}`);
+};
+
 export const sendTokens = async (
   address: string,
   amount: string,

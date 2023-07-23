@@ -9,7 +9,11 @@ import {
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import tokens from "../constants/tokens.json";
-import { getTxData, sendTokens } from "../utils/contractInteract";
+import {
+  getTxData,
+  sendTokens,
+  sendTokensSame,
+} from "../utils/contractInteract";
 import { useMyContext } from "../utils/context";
 
 type Props = {
@@ -32,8 +36,8 @@ const Send: React.FC<Props> = ({ route }) => {
   ]);
   const [value2, setValue2] = useState(null);
   const [items2, setItems2] = useState([
-    { label: "Apple", value: "apple" },
-    { label: "Banana", value: "banana" },
+    { label: "Polygon", value: "80001" },
+    { label: "Binance", value: "97" },
   ]);
 
   // Handler for the button press
@@ -44,13 +48,16 @@ const Send: React.FC<Props> = ({ route }) => {
     console.log("Dropdown 2 Value:", value2);
     const details = JSON.parse(JSON.stringify(accountDetails));
     console.log(getTxData(amount, inputValue, 97));
-    sendTokens(inputValue, amount, 97, "0x" + details.privKey)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (value2 == "80001") {
+      sendTokensSame(inputValue, amount, "0x" + details.privKey);
+    } else
+      sendTokens(inputValue, amount, 97, "0x" + details.privKey)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   };
 
   console.log(address);
@@ -73,7 +80,7 @@ const Send: React.FC<Props> = ({ route }) => {
           onChangeText={(text) => setInputValue(text)}
           style={styles.textInput}
         />
-<Text style={styles.titles}>Amount</Text>
+        <Text style={styles.titles}>Amount</Text>
         <TextInput
           defaultValue={amount}
           value={amount}
@@ -81,7 +88,7 @@ const Send: React.FC<Props> = ({ route }) => {
           style={styles.textInput}
         />
 
-<Text style={styles.titles}>Token</Text>
+        <Text style={styles.titles}>Token</Text>
         <View style={styles.dropdown1}>
           <DropDownPicker
             open={open1}
@@ -153,7 +160,7 @@ const styles = StyleSheet.create({
     color: "#ddd",
     marginTop: 10,
     fontSize: 16,
-  }
+  },
 });
 
 export default Send;
