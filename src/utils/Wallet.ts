@@ -29,10 +29,10 @@ export const getLocalStorage = async () => {
 };
 
 // Function to create or restore a wallet
-export async function getWallet(rpcUrl: string) {
+export async function getWallet(key: string) {
   // let pk = await getLocalStorage();
-  const simpleAccount = await Presets.Builder.SimpleAccount.init(
-    new ethers.Wallet(config.signingKey),
+  const simpleAccount = await Presets.Builder.Kernel.init(
+    new ethers.Wallet("0x" + key),
     config.rpcUrl
   );
   const address = simpleAccount.getSender();

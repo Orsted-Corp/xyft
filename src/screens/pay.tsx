@@ -41,7 +41,7 @@ const Pay: React.FC = () => {
               config.paymaster.context
             );
             console.log("paymasterMiddleware", paymasterMiddleware);
-            const simpleAccount = await Presets.Builder.SimpleAccount.init(
+            const simpleAccount = await Presets.Builder.Kernel.init(
               new ethers.Wallet(config.signingKey),
               config.rpcUrl,
               { paymasterMiddleware }
@@ -49,16 +49,16 @@ const Pay: React.FC = () => {
             const client = await Client.init(config.rpcUrl);
             const sendTransaction: providers.TransactionRequest =
               request.params[0];
-            
-            console.log("sd",sendTransaction);
-            const value = sendTransaction.value || 0
+
+            console.log("sd", sendTransaction);
+            const value = sendTransaction.value || 0;
 
             const res = await client.sendUserOperation(
-              simpleAccount.execute(
-                sendTransaction.to as string,
-                0,
-                sendTransaction.data as string
-              ),
+              simpleAccount.execute({
+                to: sendTransaction.to as string,
+                value: 0,
+                data: sendTransaction.data as string,
+              }),
               {}
             );
             console.log("Waiting for transaction...");
@@ -66,16 +66,15 @@ const Pay: React.FC = () => {
             console.log(`Transaction hash: ${ev?.transactionHash ?? null}`);
             const response = formatJsonRpcResult(id, ev?.transactionHash);
             console.log(response);
-            console.log(topic)
-            try{
+            console.log(topic);
+            try {
               await web3wallet.respondSessionRequest({
                 topic,
                 response,
               });
               setRequestProcessing(false);
-            }
-            catch(err){
-              console.log(err)
+            } catch (err) {
+              console.log(err);
             }
           } catch (err) {
             console.log(err);
