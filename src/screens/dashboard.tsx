@@ -34,7 +34,7 @@ const recentTransactions = [
 export default function Dashboard() {
   const { accountDetails } = useMyContext();
   const [initialized, setInitialized] = useState(false);
-  const [details,setDetails] = useState<any>(undefined);
+  const [details, setDetails] = useState<any>(undefined);
 
   const onInitialize = useCallback(async () => {
     try {
@@ -46,7 +46,7 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    if (details.privKey) {
+    if (details && details.privKey) {
       if (!initialized) {
         onInitialize();
       }
@@ -54,8 +54,9 @@ export default function Dashboard() {
   }, [details, initialized, onInitialize]);
 
   useEffect(() => {
-    setDetails(JSON.parse(JSON.stringify(accountDetails)))
-    if (details) {
+    const det = JSON.parse(JSON.stringify(accountDetails));
+    setDetails(det);
+    if (det) {
       getWallet(details.privKey).then((res) => {
         getBalance(res).then((res) => {
           setBalance(res);
@@ -66,21 +67,24 @@ export default function Dashboard() {
   const [balance, setBalance] = useState("0");
 
   return (
-    <ImageBackground style={styles.container} source={require('../assets/background.png')}>
-    <View style={styles.container}>
-    <Header />
-    <BalanceDisplay balance={100} />
-    <RecentTransactions transactions={recentTransactions} />
-    <StatusBar style="auto" />
-    </View>
+    <ImageBackground
+      style={styles.container}
+      source={require("../assets/background.png")}
+    >
+      <View style={styles.container}>
+        <Header />
+        <BalanceDisplay balance={balance} />
+        <RecentTransactions transactions={recentTransactions} />
+        <StatusBar style="auto" />
+      </View>
     </ImageBackground>
   );
 }
 
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            alignItems: 'center',
-            flexDirection: 'column',
-        }
-    });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    flexDirection: "column",
+  },
+});
