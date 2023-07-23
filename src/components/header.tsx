@@ -25,7 +25,7 @@ const Header: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
-        <TouchableOpacity onPress={() => {return(<ParentControl /> )}}>
+        <TouchableOpacity onPress={() => {navigation.navigate('ParentControl')}}>
         <Image source={require('../assets/profileImage.jpeg')} style={styles.profilePicture} />
         </TouchableOpacity>
         

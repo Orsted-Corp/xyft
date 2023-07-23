@@ -9,6 +9,7 @@ import Dashboard from './dashboard';
 import Pay from './pay';
 import Send from './send';
 import Chat from './chat';
+import ParentControl from './parentControl';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -31,6 +32,9 @@ function HomeStack() {
             <Stack.Screen
             name="chat"
             component={Chat} />
+            <Stack.Screen
+            name="ParentControl"
+            component={ParentControl} />
         </Stack.Navigator>
     );
   }
