@@ -1,0 +1,23 @@
+{
+    "name": "xyft-backend",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "@safe-global/api-kit": "^1.0.1",
+      "@safe-global/protocol-kit": "^0.1.1",
+      "@safe-global/safe-core-sdk-types": "^1.10.1",
+      "arg": "^5.0.2",
+      "axios": "^1.4.0",
+      "ethers": "5.4",
+      "express": "^4.18.2"
+    },
+    "devDependencies": {
+      "@types/express": "^4.17.17"
+    }
+  }

@@ -46,7 +46,7 @@ const Pay: React.FC = () => {
             );
             console.log("paymasterMiddleware", paymasterMiddleware);
             const simpleAccount = await Presets.Builder.Kernel.init(
-              new ethers.Wallet(config.key),
+              new ethers.Wallet(det.privKey),
               config.rpcUrl,
               { paymasterMiddleware }
             );
