@@ -66,21 +66,22 @@ const Send: React.FC<Props> = ({ route }) => {
     >
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         {/* Input field */}
+        <Text style={styles.titles}>Address</Text>
         <TextInput
           defaultValue={inputValue}
           value={inputValue}
           onChangeText={(text) => setInputValue(text)}
           style={styles.textInput}
         />
-
+<Text style={styles.titles}>Amount</Text>
         <TextInput
           defaultValue={amount}
-          value={inputValue}
+          value={amount}
           onChangeText={(text) => setAmount(text)}
           style={styles.textInput}
         />
 
-        {/* Dropdown 1 */}
+<Text style={styles.titles}>Token</Text>
         <View style={styles.dropdown1}>
           <DropDownPicker
             open={open1}
@@ -92,7 +93,7 @@ const Send: React.FC<Props> = ({ route }) => {
           />
         </View>
 
-        {/* Dropdown 2 */}
+        <Text style={styles.titles}>Chain</Text>
         <View style={styles.dropdown2}>
           <DropDownPicker
             open={open2}
@@ -126,6 +127,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: "#fff",
     borderRadius: 10,
+    marginTop: 20,
   },
   dropdown1: {
     height: 40,
@@ -147,6 +149,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 60,
   },
+  titles: {
+    color: "#ddd",
+    marginTop: 10,
+    fontSize: 16,
+  }
 });
 
 export default Send;
