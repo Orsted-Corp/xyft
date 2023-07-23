@@ -39,6 +39,7 @@ const Header: React.FC = () => {
         value={qrData}
         size={200} // Adjust the size of the QR code as needed
           />
+          <Text>{publicKey}</Text>
             <TouchableOpacity onPress={ () => {setModalVisible(false)}} style={styles.modalText}>
               <Text>Close</Text>
             </TouchableOpacity>
