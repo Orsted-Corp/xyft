@@ -57,7 +57,7 @@ export default function Dashboard() {
     const det = JSON.parse(JSON.stringify(accountDetails));
     setDetails(det);
     if (det) {
-      getWallet(details.privKey).then((res) => {
+      getWallet(det.privKey).then((res) => {
         getBalance(res).then((res) => {
           setBalance(res);
         });
