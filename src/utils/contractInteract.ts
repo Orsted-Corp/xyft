@@ -106,3 +106,20 @@ export const sendTokens = async (
   console.log(`Transaction hash: ${ev?.transactionHash ?? null}`);
   return ev?.transactionHash ?? null;
 };
+
+export const getTxData = async (amount, address, chainId) => {
+  const USDCMumbaiRouter = new ethers.Contract(
+    tokens.router,
+    HyperLaneAbi,
+    new ethers.providers.JsonRpcProvider(tokens.rpc)
+  );
+  return {
+    to: tokens.router,
+    value: 5000000000000000,
+    data: USDCMumbaiRouter.interface.encodeFunctionData("transferRemote", [
+      chainId,
+      addressToBytes32(address),
+      ethers.utils.parseUnits(amount, 18),
+    ]),
+  };
+};

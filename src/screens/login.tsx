@@ -1,21 +1,36 @@
-import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
+import Web3Auth, {
+  LOGIN_PROVIDER,
+  OPENLOGIN_NETWORK,
+} from "@web3auth/react-native-sdk";
 import Constants, { AppOwnership } from "expo-constants";
 import * as Linking from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
 import React, { useState } from "react";
-import { Button, Dimensions, ScrollView, StyleSheet, Text, View, Image, ImageBackground } from "react-native";
+import {
+  Button,
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ImageBackground,
+} from "react-native";
 import { useMyContext } from "../utils/context";
 import Home from "./home";
 import { ethers } from "ethers";
 
 import RPC from "../utils/ethersRPC"; // for using ethers.js
+import { getWallet } from "../utils/Wallet";
 
 const resolvedRedirectUrl =
-  Constants.appOwnership === AppOwnership.Expo || Constants.appOwnership === AppOwnership.Guest
+  Constants.appOwnership === AppOwnership.Expo ||
+  Constants.appOwnership === AppOwnership.Guest
     ? Linking.createURL("web3auth", {})
     : Linking.createURL("web3auth", { scheme: scheme });
 
-const clientId = "BIUZyts5pQ2QwwXjyeVu5OiosyboSvJ6mTFFNTQh6Kge3sjd5OVey_i0Y2XE2XomTSMW1y58vJnXTOggM2rO1dQ";
+const clientId =
+  "BIUZyts5pQ2QwwXjyeVu5OiosyboSvJ6mTFFNTQh6Kge3sjd5OVey_i0Y2XE2XomTSMW1y58vJnXTOggM2rO1dQ";
 
 const LoginScreen: React.FC = () => {
   const [key, setKey] = useState<string>("");
@@ -42,39 +57,36 @@ const LoginScreen: React.FC = () => {
       setKey(info.privKey);
       setAccountDetails(info);
       const privateKey = info.privKey;
-      const wallet = new ethers.Wallet(
-        privateKey
-    );
+      const wallet = new ethers.Wallet(privateKey);
       const provider = new ethers.providers.JsonRpcProvider(
         "https://rpc.ankr.com/polygon"
-    );
-    const signer = wallet.connect(provider);
-    setPublicKey(await signer.getAddress());
-      (info);
+      );
+      const signer = wallet.connect(provider);
+      setPublicKey(await getWallet(privateKey));
+      info;
     } catch (e) {
       setConsole("Error: " + e);
-    }   
+    }
   };
 
-  const loggedInView = (
-    <Home />
-  );
+  const loggedInView = <Home />;
 
   const unloggedInView = (
-    <ImageBackground style={styles.container} source={require('../assets/background.png')}>
+    <ImageBackground
+      style={styles.container}
+      source={require("../assets/background.png")}
+    >
       <View style={styles.buttonArea}>
-        <Image source={require('../assets/circle.png')} style={styles.circle} />
+        <Image source={require("../assets/circle.png")} style={styles.circle} />
         <Text style={styles.title}>Xyft</Text>
         <View style={styles.button}>
-        <Button title="Login" onPress={login} color={'#ddd'}/>
+          <Button title="Login" onPress={login} color={"#ddd"} />
         </View>
       </View>
-      </ImageBackground>
+    </ImageBackground>
   );
 
-  return (
-      key ? loggedInView : unloggedInView
-  );
+  return key ? loggedInView : unloggedInView;
 };
 
 const styles = StyleSheet.create({
@@ -109,20 +121,20 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   circle: {
-    alignContent: 'center',
-    marginTop: 50
+    alignContent: "center",
+    marginTop: 50,
   },
   title: {
     fontSize: 50,
-    color: '#ddd',
-    fontFamily: 'AppleSDGothicNeo-Light',
-    fontWeight: '100'
+    color: "#ddd",
+    fontFamily: "AppleSDGothicNeo-Light",
+    fontWeight: "100",
   },
   button: {
-    backgroundColor: '#6100FF',
+    backgroundColor: "#6100FF",
     width: 300,
     borderRadius: 10,
-  }
+  },
 });
 
 export default LoginScreen;

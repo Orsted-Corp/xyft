@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import tokens from "../constants/tokens.json";
-import { sendTokens } from "../utils/contractInteract";
+import { getTxData, sendTokens } from "../utils/contractInteract";
 import { useMyContext } from "../utils/context";
 
 type Props = {
@@ -43,7 +43,7 @@ const Send: React.FC<Props> = ({ route }) => {
     console.log("Dropdown 1 Value:", value1);
     console.log("Dropdown 2 Value:", value2);
     const details = JSON.parse(JSON.stringify(accountDetails));
-
+    console.log(getTxData(amount, inputValue, 97));
     sendTokens(inputValue, amount, 97, "0x" + details.privKey)
       .then((res) => {
         console.log(res);
