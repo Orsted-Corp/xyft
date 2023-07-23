@@ -21,6 +21,7 @@ import { formatJsonRpcResult } from "@json-rpc-tools/utils";
 import { ethers, providers } from "ethers";
 import { id } from "ethers/lib/utils";
 import config from "../../config.json";
+import axios from "axios";
 import { useMyContext } from "../utils/context";
 
 const Pay: React.FC = () => {
@@ -76,6 +77,26 @@ const Pay: React.FC = () => {
                 response,
               });
               setRequestProcessing(false);
+
+              // Transaction successful notification
+              const notif = {
+                notifTitle: "Transaction successful",
+                notifBody: `Transaction hash: ${ev?.transactionHash ?? null}`,
+              }
+
+              const url = "http://20.127.16.238:3000/push"
+
+              try {
+                const response = await axios.post(url, notif);
+        
+                // Assuming the server returns a JSON response
+                const responseData = response.data;
+                console.log('Response Data:', responseData);
+              } catch (error) {
+                // Handle errors
+                console.error('Error:', error);
+              }
+
             } catch (err) {
               console.log(err);
             }
