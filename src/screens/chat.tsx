@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, FlatList, StyleSheet, Text, Button, KeyboardAvoidingView, Platform } from "react-native";
+import { View, TextInput, FlatList, StyleSheet, Text, Button, KeyboardAvoidingView, Platform, ImageBackground } from "react-native";
 
 interface Message {
   text: string;
@@ -26,6 +26,7 @@ const Chat: React.FC = () => {
 
 
   return (
+    <ImageBackground style={styles.container} source={require('../assets/background.png')}>
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       style={styles.container}
@@ -35,10 +36,13 @@ const Chat: React.FC = () => {
       <TextInput
         style={styles.input}
         placeholder="Enter address"
+        placeholderTextColor={'#aaa'}
         value={inputValue}
         onChangeText={(text) => setInputValue(text)}
       />
-      <Button title="Set" onPress={handleButtonClick} />
+      <View style={styles.button}>
+      <Button title="Set" onPress={handleButtonClick} color={'#ddd'}/>
+      </View>
     </View>
     <View style={styles.container}>
       <FlatList
@@ -49,7 +53,7 @@ const Chat: React.FC = () => {
               item.sender === "user" ? styles.userMessage : styles.otherMessage
             }
           >
-            <Text>{item.text}</Text>
+            <Text style={{ color: '#ddd' }} >{item.text}</Text>
           </View>
         )}
         keyExtractor={(item, index) => index.toString()}
@@ -58,6 +62,7 @@ const Chat: React.FC = () => {
         <TextInput
           style={styles.input2}
           placeholder="Type your message..."
+          placeholderTextColor={'#aaa'}
           value={newMessage}
           onChangeText={(text) => setNewMessage(text)}
           onSubmitEditing={handleSendMessage}
@@ -66,13 +71,14 @@ const Chat: React.FC = () => {
     </View>
     </View>
     </KeyboardAvoidingView>
+    </ImageBackground>
   )
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "rgba(0,0,0,0)",
     padding: 10,
   },
   userMessage: {
@@ -82,42 +88,43 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderRadius: 10,
     maxWidth: "70%",
+    color: '#fff'
   },
   otherMessage: {
     alignSelf: "flex-start",
-    backgroundColor: "#EAEAEA",
+    backgroundColor: "#0a256b",
     padding: 10,
     marginVertical: 5,
     borderRadius: 10,
     maxWidth: "70%",
+    color: '#fff'
   },
   inputContainer: {
-    borderTopWidth: 1,
-    borderColor: "#ccc",
+    backgroundColor: 'rgba(255,255,255,0)',
     padding: 10,
+
   },
   input: {
     height: 40,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#777",
     borderRadius: 5,
     paddingHorizontal: 10,
     width: "80%",
+    color: '#ddd',
   },
   input2: {
     height: 40,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#444",
     borderRadius: 5,
     paddingHorizontal: 10,
     width: "100%",
+    color: '#ddd'
   },
   contain: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: '#ccc',
     padding: 10,
     marginVertical: '10%',
     justifyContent: 'space-around'
@@ -125,6 +132,10 @@ const styles = StyleSheet.create({
   entire: {
     flex: 1,
     flexDirection: 'column',
+  },
+  button: {
+    backgroundColor: '#6100FF',
+    borderRadius: 10,
   }
 });
 
