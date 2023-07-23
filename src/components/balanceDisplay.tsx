@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 
 interface BalanceDisplayProps {
-  balance: number;
+  balance: string;
 }
 
 const BalanceDisplay: React.FC<BalanceDisplayProps> = ({ balance }) => {
@@ -11,9 +11,9 @@ const BalanceDisplay: React.FC<BalanceDisplayProps> = ({ balance }) => {
       style={styles.backgroundImage}
     >
     <View style={styles.container}>
-        <Text style={styles.balanceLabel}>Balance</Text>
-        <Text style={styles.walletLabel}>Wallet</Text>
-        <Text style={styles.balanceAmount}>{balance.toFixed(2)}</Text>
+      <Text style={styles.balanceLabel}>Balance</Text>
+      <Text style={styles.walletLabel}>Wallet</Text>
+      <Text style={styles.balanceAmount}>{balance}</Text>
     </View>
     </ImageBackground>
   );
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     borderRadius: 10,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     width: 350,
     height: 175,
-    flexDirection: 'column',
+    flexDirection: "column",
     paddingLeft: 25,
   },
   balanceLabel: {
@@ -48,8 +48,8 @@ const styles = StyleSheet.create({
     },
   balanceAmount: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#2ecc71',
+    fontWeight: "bold",
+    color: "#2ecc71",
     marginBottom: 1,
   },
   backgroundImage: {

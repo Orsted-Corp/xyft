@@ -1,5 +1,5 @@
 import { CHAINS, Chain } from "./WalletLib";
-import { utils } from "ethers";
+import { ethers, utils } from "ethers";
 
 /**
  * Truncates string (in the middle) via given lenght value
@@ -80,4 +80,10 @@ export function getWalletAddressFromParams(addresses: string[], params: any) {
  */
 export function formatChainName(chainId: string) {
   return CHAINS[chainId as Chain]?.name ?? chainId;
+}
+
+export function addressToBytes32(address: string): string {
+  return ethers.utils
+    .hexZeroPad(ethers.utils.hexStripZeros(address), 32)
+    .toLowerCase();
 }

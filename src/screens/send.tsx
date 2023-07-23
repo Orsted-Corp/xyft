@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, ImageBackground, StyleSheet } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
+import React, { useEffect, useState } from "react";
+import { View, Text, TextInput, Button, ImageBackground, StyleSheet } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
+import tokens from "../constants/tokens.json";
+import { sendTokens } from "../utils/contractInteract";
+import { useMyContext } from "../utils/context";
 
 type Props = {
     route: { params: { address: string } };
@@ -9,26 +12,38 @@ type Props = {
 const Send: React.FC<Props> = ({ route }) => {
     let { address } = route.params;
   // State variables for the input field and dropdowns
-  const [inputValue, setInputValue] = useState('');
+  const { accountDetails } = useMyContext();
+
+  const [inputValue, setInputValue] = useState("");
+  const [amount, setAmount] = useState("");
+
   const [value1, setValue1] = useState(null);
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [items1, setItems1] = useState([
-    { label: 'Apple', value: 'apple' },
-    { label: 'Banana', value: 'banana' },
+    { label: "USDC", value: tokens.wrapped.bsct.USDC },
   ]);
   const [value2, setValue2] = useState(null);
   const [items2, setItems2] = useState([
-    { label: 'Apple', value: 'apple' },
-    { label: 'Banana', value: 'banana' },
+    { label: "Apple", value: "apple" },
+    { label: "Banana", value: "banana" },
   ]);
 
   // Handler for the button press
   const handleButtonPress = () => {
     // Do something with the form values, for example, handle form submission
-    console.log('Input Value:', inputValue);
-    console.log('Dropdown 1 Value:', value1);
-    console.log('Dropdown 2 Value:', value2);
+    console.log("Input Value:", inputValue);
+    console.log("Dropdown 1 Value:", value1);
+    console.log("Dropdown 2 Value:", value2);
+    const details = JSON.parse(JSON.stringify(accountDetails))
+
+    sendTokens(inputValue, amount, 97, "0x" + details.privKey)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   console.log(address)
@@ -51,7 +66,7 @@ const Send: React.FC<Props> = ({ route }) => {
       {/* Dropdown 1 */}
       <View style={styles.dropdown1}>
         <DropDownPicker
-            open={open1}
+          open={open1}
           value={value1}
           items={items1}
           setOpen={setOpen1}

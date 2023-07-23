@@ -12,12 +12,11 @@ export let currentETHAddress: string;
 import { useState, useCallback, useEffect } from "react";
 import { getWallet } from "./Wallet";
 
-async function createWeb3Wallet() {
-  console.log("Initializing wallet")
-  currentETHAddress = await getWallet(config.rpcUrl);
+export async function createWeb3Wallet(pk: string) {
+  console.log("Initializing wallet");
+  currentETHAddress = await getWallet(pk);
 
   console.log(currentETHAddress);
-  console.log(config.walletConnectProjectId);
   const core = new Core({
     projectId: config.walletConnectProjectId,
   });
@@ -34,12 +33,12 @@ async function createWeb3Wallet() {
 }
 
 // Initialize the Web3Wallet
-export default function useInitialization() {
+export default function useInitialization(pk: string) {
   const [initialized, setInitialized] = useState(false);
 
   const onInitialize = useCallback(async () => {
     try {
-      await createWeb3Wallet();
+      await createWeb3Wallet(pk);
       setInitialized(true);
     } catch (err: unknown) {
       console.log("Error for initializing", err);

@@ -21,7 +21,11 @@
     "@walletconnect/web3wallet": "^1.8.7",
     "@web3auth/react-native-sdk": "^3.3.0",
     "buffer": "^6.0.3",
+<<<<<<< HEAD
     "ethers": "^5.6.9",
+=======
+    "ethers": "^5.0.0",
+>>>>>>> 237687b (erc4337)
     "expo": "^49.0.4",
     "expo-barcode-scanner": "~12.5.3",
     "expo-crypto": "~12.4.1",
@@ -40,8 +44,11 @@
     "react-native-qrcode-svg": "^6.2.0",
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
+<<<<<<< HEAD
     "react-native-svg": "13.9.0",
     "react-native-svg-transformer": "^1.1.0",
+=======
+>>>>>>> 237687b (erc4337)
     "userop": "^0.3.1"
   },
   "expo": {
