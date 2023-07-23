@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import Scanner from "../components/scanner";
 import React, { useCallback, useEffect, useState } from "react";
-import { Platform } from "react-native";
+import { Platform, ImageBackground } from "react-native";
 import { SessionTypes, SignClientTypes } from "@walletconnect/types";
 import useInitialization, {
   currentETHAddress,
@@ -199,6 +199,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
+    backgroundColor: '#111'
   },
   input: {
     height: 50,

@@ -3,7 +3,7 @@ import Constants, { AppOwnership } from "expo-constants";
 import * as Linking from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
 import React, { useState } from "react";
-import { Button, Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Button, Dimensions, ScrollView, StyleSheet, Text, View, Image, ImageBackground } from "react-native";
 import { useMyContext } from "../utils/context";
 import Home from "./home";
 import { ethers } from "ethers";
@@ -61,9 +61,15 @@ const LoginScreen: React.FC = () => {
   );
 
   const unloggedInView = (
+    <ImageBackground style={styles.container} source={require('../assets/background.png')}>
       <View style={styles.buttonArea}>
-        <Button title="Login with Web3Auth" onPress={login} />
+        <Image source={require('../assets/circle.png')} style={styles.circle} />
+        <Text style={styles.title}>Xyft</Text>
+        <View style={styles.button}>
+        <Button title="Login" onPress={login} color={'#ddd'}/>
+        </View>
       </View>
+      </ImageBackground>
   );
 
   return (
@@ -102,6 +108,21 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     paddingBottom: 30,
   },
+  circle: {
+    alignContent: 'center',
+    marginTop: 50
+  },
+  title: {
+    fontSize: 50,
+    color: '#ddd',
+    fontFamily: 'AppleSDGothicNeo-Light',
+    fontWeight: '100'
+  },
+  button: {
+    backgroundColor: '#6100FF',
+    width: 300,
+    borderRadius: 10,
+  }
 });
 
 export default LoginScreen;

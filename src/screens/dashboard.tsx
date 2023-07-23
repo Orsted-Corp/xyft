@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import Header from '../components/header';
 import BalanceDisplay from '../components/balanceDisplay';
@@ -29,19 +29,20 @@ const recentTransactions = [
 export default function Dashboard() {
   const initialized = useInitialization()
     return (
+      <ImageBackground style={styles.container} source={require('../assets/background.png')}>
         <View style={styles.container}>
         <Header />
         <BalanceDisplay balance={100} />
         <RecentTransactions transactions={recentTransactions} />
         <StatusBar style="auto" />
         </View>
+        </ImageBackground>
     );
     }
 
     const styles = StyleSheet.create({
         container: {
             flex: 1,
-            backgroundColor: '#aaa',
             alignItems: 'center',
             flexDirection: 'column',
         }

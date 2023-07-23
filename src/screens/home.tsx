@@ -41,23 +41,32 @@ export default function Home() {
         <Tab.Navigator
             initialRouteName="Dashboard"
             screenOptions={({ route }) => ({
+                tabBarStyle: {
+                    backgroundColor: 'rgba(34,36,40,1)',
+                    borderTopWidth: 0,
+                },
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName: string = 'home';
                     if (route.name === 'Dashboard') {
                         iconName = focused ? 'home' : 'home-outline';
                     } else if (route.name === 'Pay') {
-                        iconName = focused ? 'account' : 'account-outline';
+                        iconName = focused ? 'barcode-scan' : 'barcode-scan';
+                    } else if (route.name === 'Send') {
+                        iconName = focused ? 'account-arrow-up' : 'account-arrow-up-outline';
+                    } else if (route.name === 'Chat') {
+                        iconName = focused ? 'chat' : 'chat-outline';
                     }
-                    return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
+                    return <MaterialCommunityIcons name={iconName} size={size} color={'#ddd'} />;
                 },
                 tabBarActiveTintColor: 'tomato',
                 tabBarInactiveTintColor: 'gray',
                 headerShown: false,
+                styles
             })}
         >
             <Tab.Screen name="Dashboard" component={HomeStack} />
             <Tab.Screen name="Pay" component={Pay} />
-            <Tab.Screen name="Send" component={Send} />
+            <Tab.Screen name="Send" component={Send} initialParams={{ address: '0x' }}/>
             <Tab.Screen name="Chat" component={Chat} />
         </Tab.Navigator>
     </NavigationContainer>
@@ -67,7 +76,7 @@ export default function Home() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#aaa',
+        backgroundColor: '#A596BA',
         alignItems: 'center',
         flexDirection: 'column',
     }

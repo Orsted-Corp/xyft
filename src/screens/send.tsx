@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TextInput, Button, ImageBackground, StyleSheet } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 type Props = {
@@ -7,8 +7,7 @@ type Props = {
   };
 
 const Send: React.FC<Props> = ({ route }) => {
-    const { address } = route.params;
-    console.log(address);
+    let { address } = route.params;
   // State variables for the input field and dropdowns
   const [inputValue, setInputValue] = useState('');
   const [value1, setValue1] = useState(null);
@@ -32,18 +31,25 @@ const Send: React.FC<Props> = ({ route }) => {
     console.log('Dropdown 2 Value:', value2);
   };
 
+  console.log(address)
+
+  useEffect(()=>{
+    setInputValue(address)
+  },[address])
+
   return (
+    <ImageBackground style={styles.container} source={require('../assets/background.png')}>
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       {/* Input field */}
       <TextInput
-        placeholder="Enter something..."
+        defaultValue={inputValue}
         value={inputValue}
         onChangeText={text => setInputValue(text)}
-        style={{ width: '80%', height: 40, borderWidth: 1, padding: 10, marginBottom: 20 }}
+        style={styles.textInput}
       />
 
       {/* Dropdown 1 */}
-      <View style={{ width: '80%', height: 40, marginTop: 10, zIndex: 10 }}>
+      <View style={styles.dropdown1}>
         <DropDownPicker
             open={open1}
           value={value1}
@@ -55,7 +61,7 @@ const Send: React.FC<Props> = ({ route }) => {
       </View>
 
       {/* Dropdown 2 */}
-      <View style={{ width: '80%', height: 40, marginTop: 50, zIndex: 5 }}>
+      <View style={styles.dropdown2}>
         <DropDownPicker
           open={open2}
           value={value2}
@@ -67,11 +73,48 @@ const Send: React.FC<Props> = ({ route }) => {
       </View>
 
       {/* Button */}
-      <View style={{ marginTop: 100 }}>
-      <Button title="Submit" onPress={handleButtonPress} />
+      <View style={styles.button}>
+      <Button title="Submit" onPress={handleButtonPress} color={'#ddd'}/>
       </View>
     </View>
+    </ImageBackground>
   );
 };
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        flexDirection: 'column',
+    },
+    textInput: {
+        width: 325, 
+        height: 45, 
+        borderWidth: 1, 
+        padding: 10, 
+        marginBottom: 10,
+        backgroundColor: '#fff',
+        borderRadius: 10
+    },
+    dropdown1: {
+        height: 40, 
+        marginTop: 20,
+        zIndex: 10,
+        width: 325,
+        marginBottom: 20
+    },
+    dropdown2: {
+        height: 40, 
+        marginTop: 20,
+        zIndex: 5,
+        width: 325,
+        marginBottom: 20
+    },
+    button: {
+        backgroundColor: '#6100FF',
+        width: 325,
+        borderRadius: 10,
+        marginTop: 60,
+      }
+});
 
 export default Send;
