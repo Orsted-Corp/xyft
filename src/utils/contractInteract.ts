@@ -60,6 +60,7 @@ export const sendTokensSame = async (
   console.log("Waiting for transaction...");
   const ev = await res.wait();
   console.log(`Transaction hash for transfer: ${ev?.transactionHash ?? null}`);
+  return ev?.transactionHash ?? null;
 };
 
 export const sendTokens = async (

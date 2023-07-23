@@ -15,6 +15,7 @@ import {
   sendTokensSame,
 } from "../utils/contractInteract";
 import { useMyContext } from "../utils/context";
+import axios from "axios";
 
 type Props = {
   route: { params: { address: string } };
@@ -41,23 +42,42 @@ const Send: React.FC<Props> = ({ route }) => {
   ]);
 
   // Handler for the button press
-  const handleButtonPress = () => {
+  const handleButtonPress = async () => {
     // Do something with the form values, for example, handle form submission
     console.log("Input Value:", inputValue);
     console.log("Dropdown 1 Value:", value1);
     console.log("Dropdown 2 Value:", value2);
     const details = JSON.parse(JSON.stringify(accountDetails));
     console.log(getTxData(amount, inputValue, 97));
+    let hash;
     if (value2 == "80001") {
-      sendTokensSame(inputValue, amount, "0x" + details.privKey);
+      hash = await sendTokensSame(inputValue, amount, "0x" + details.privKey);
     } else
-      sendTokens(inputValue, amount, 97, "0x" + details.privKey)
+      hash = await sendTokens(inputValue, amount, 97, "0x" + details.privKey)
         .then((res) => {
           console.log(res);
         })
         .catch((err) => {
           console.log(err);
         });
+
+    const notif = {
+      notifTitle: "Transaction successful",
+      notifBody: `Transaction hash: ${hash}`,
+    };
+
+    const url = "http://20.127.16.238:3000/push";
+
+    try {
+      const response = await axios.post(url, notif);
+
+      // Assuming the server returns a JSON response
+      const responseData = response.data;
+      console.log("Response Data:", responseData);
+    } catch (error) {
+      // Handle errors
+      console.error("Error:", error);
+    }
   };
 
   console.log(address);
