@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-const Send = () => {
+type Props = {
+    route: { params: { address: string } };
+  };
+
+const Send: React.FC<Props> = ({ route }) => {
+    const { address } = route.params;
+    console.log(address);
   // State variables for the input field and dropdowns
   const [inputValue, setInputValue] = useState('');
   const [value1, setValue1] = useState(null);

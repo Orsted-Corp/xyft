@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Button } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { web3WalletPair } from "../utils/WalletConnectUtils";
+import Send from "../screens/send";
+import { useNavigation } from '@react-navigation/native';
 
 export default function Scanner() {
+  const navigation = useNavigation();
   const [hasPermission, setHasPermission] = useState(false);
   const [scanned, setScanned] = useState(false);
   const [data, setData] = useState("");
@@ -19,6 +22,14 @@ export default function Scanner() {
   const handleBarCodeScanned = async ({ type, data }: any) => {
     setScanned(true);
     setData(data);
+    // Check if the data starts with "ethereum:"
+    if (data.startsWith("ethereum:")) {
+      // Remove the "ethereum:" part
+      data = data.slice(9);
+      // Go to Send screen with the address
+      console.log("Pairing successful");
+      navigation.navigate('Send', { address: data });
+    } else {
     web3WalletPair({ uri: data })
       .then((res) => {
         console.log("Pairing successful"), res;
@@ -26,6 +37,7 @@ export default function Scanner() {
       .catch((err: unknown) => {
         console.log("Pairing failed", err);
       });
+    }
     // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 
@@ -56,6 +68,6 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "100%",
     height: "75%",
-    marginTop: 0,
+    marginTop: 50,
   },
 });
